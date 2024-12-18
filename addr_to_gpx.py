@@ -2,7 +2,6 @@ from geopy.geocoders import Nominatim
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import pandas as pd
-import os
 
 def process_xlsx_file(file_path):
     df = pd.read_excel(file_path, header=None)
