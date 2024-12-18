@@ -1,16 +1,20 @@
-import geopy
 from geopy.geocoders import Nominatim
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+import pandas as pd
+import os
+
+def process_xlsx_file(file_path):
+    df = pd.read_excel(file_path, header=None)
+    addresses = (df[0].astype(str) + ", " + df[1].astype(str)).dropna()
+    return addresses
 
 def geocode_addresses_to_gpx(addresses, output_file='locations.gpx'):
-    # Initialize the Nominatim Geocoder
     geolocator = Nominatim(user_agent="address_converter")
 
     # Create the root element for GPX
     gpx = ET.Element('gpx', version="1.1", creator="JSON to GPX Converter")
 
-    # Geocode addresses
     for address in addresses:
         try:
             location = geolocator.geocode(address)
@@ -32,12 +36,13 @@ def geocode_addresses_to_gpx(addresses, output_file='locations.gpx'):
 
     print(f"GPX file saved as {output_file}")
 
-# Example addresses
-example_addresses = [
-    "Brandenburger Tor, Berlin",
-    "Marienplatz 1, München",
-    "Rathaus, Hamburg"
-]
+
+# main program
+filename = 'addresses.xlsx'
+
+# Convert xlsx to addresses array
+addresses = process_xlsx_file(filename)
 
 # Convert addresses to GPX and save to a file
-geocode_addresses_to_gpx(example_addresses)
+geocode_addresses_to_gpx(addresses)
+

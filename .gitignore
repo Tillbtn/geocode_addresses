@@ -1,2 +1,5 @@
 *.gpx
+*.xls
+*.xlsx
+*.ods
 .idea/
